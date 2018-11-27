@@ -14,7 +14,7 @@ namespace Measurement
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "文本文件|*.txt|所有文件|*.*";
             string targetpath;
-            if (ofd.ShowDialog() == true)
+            if (ofd.ShowDialog() == true)  //WPF
             {
                 targetpath = ofd.FileName;
                 string[] all = File.ReadAllLines(ofd.FileName);
@@ -25,12 +25,12 @@ namespace Measurement
         void SaveText()
         {              
             SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = "文本文件|*.txt|所有文件|*.*";
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    string targetpath = sfd.FileName;
-                    File.WriteAllLines(targetpath, vps);
-                }
+            sfd.Filter = "文本文件|*.txt|所有文件|*.*";
+            if (sfd.ShowDialog() == DialogResult.OK) //WinForm
+            {
+               string targetpath = sfd.FileName;
+               File.WriteAllLines(targetpath, vps);
+            }
         }
     }
 }
