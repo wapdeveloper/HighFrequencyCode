@@ -60,6 +60,27 @@ namespace Measurement
             return (d + m / 100.0 + s / 10000.0) * fuhao;
         }
         
-        
+	    
+	    
+	    
+        /// <summary>
+        /// 多边形面积计算(不论凸凹)
+        /// </summary>
+        /// <param name="count">坐标点数</param>
+        /// <param name="X">坐标的横坐标集合</param>
+        /// <param name="Y">坐标的纵坐标集合</param>
+        /// <returns></returns>
+        private double AoArea(int count,double [] X,double [] Y) 
+        {
+            double area;
+            if (count < 3) 
+                return 0;
+            area= Y[0] * (X[count - 1] - X[1]);
+            for (int i = 1; i <count; i++)
+                area+= Y[i] * (X[(i - 1)] - X[(i + 1)%count]);
+            return area/2;
+        }
+	    
+	    
     }
 }
