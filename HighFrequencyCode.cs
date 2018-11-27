@@ -23,8 +23,14 @@ namespace Measurement
         }
 
         void SaveText()
-        {
+        {              
             SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Filter = "文本文件|*.txt|所有文件|*.*";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    string targetpath = sfd.FileName;
+                    File.WriteAllLines(targetpath, vps);
+                }
         }
     }
 }
