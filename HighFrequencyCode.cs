@@ -7,6 +7,58 @@ using System.Text;
 
 namespace Measurement
 {
+    class DuplicateDefine : IEqualityComparer<DateYMD>
+    {
+   	 public bool Equals(DateYMD x, DateYMD y)
+   	 {
+      	    return (x.year == y.year)&&(x.month == y.month)&&(x.day == y.day);
+   	 }
+
+   	 public int GetHashCode(DateYMD obj)
+   	 {
+      	    return obj.ToString().GetHashCode();
+    	 }
+    }
+    
+	
+    public class DateYMD:IComparable
+    {
+    	public int year;
+    	public int month;
+    	public int day;
+   	public string datename;
+
+	public DateYMD(string datename)
+	{
+       	   this.datename=datename;
+       	   string[] ymd = datename.Split('/');
+           this.year = int.Parse(ymd[0]);
+           this.month = int.Parse(ymd[1]);
+           this.day = int.Parse(ymd[2]);
+	}
+   	public int CompareTo(Object obj)
+   	{
+           DateYMD dymd = (DateYMD)obj;
+           if (this.year > dymd.year) 
+              return 1;
+           else if (this.year == dymd.year) 
+           { 
+               if(this.month>dymd.month)
+                  return 1;
+               else if (this.month == dymd.month)
+               {
+                  if (this.day > dymd.day)
+                  {
+                      return 1;
+                  }
+                  else if (this.day == dymd.day)
+                      return 0;
+               }
+            }
+            return -1;
+        }
+    }
+	
     class HighFrequencyCode
     {
         void OpenText()
@@ -37,7 +89,7 @@ namespace Measurement
              
         
         //将ddd.mmss转为弧度
-	    static public double DEG(double ang)
+	static public double DEG(double ang)
         {
             int fuhao = (int)(ang / Math.Abs(ang));
             ang = Math.Abs(ang) + 1.0E-13;
@@ -82,6 +134,18 @@ namespace Measurement
         }
 	    
 	//LINQ
+	
+	//去重！
+	void YMDDistinct()
+	{
+	   var list = dymlist.Distinct(new DuplicateDefine()).ToList();
+           DateYMD dymd1 = new DateYMD(datename1);
+           DateYMD dymd2 = new DateYMD(datename2);
+           var dateresult = list.FindAll(x => (x.CompareTo(dymd1) == 1 && x.CompareTo(dymd2) == -1)).ToList();
+           dateresult.Insert(0, dymd1);
+           dateresult.Add(dymd2);   
+	}    
+	    
 	//正则表达式
     }
 }
